@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<HTML lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DAO Votação</title>
+</head>
+<body>
+    <h1>Vote na Conta para Receber o Pagamento</h1>
+    <form id="voteForm" method="POST">
+        <select name="account">
+            {% for account in accounts %}
+                <option value="{{ account }}">{{ account }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Votar</button>
+    </form>
+
+    <h2>Estado do Fundo</h2>
+    <p>Fundo de doação: {{ fund_pool }}</p>
+    <p>Pool de Doadores: {{ donor_pool }}</p>
+    <p>Pool da Equipe de Desenvolvimento: {{ dev_team_pool }}</p>
+
+    <script>
+        document.getElementById("voteForm").onsubmit = async function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch('/vote', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            alert(result.message);
+        };
+    </script>
+</body>
+</HTML>
